@@ -1,0 +1,49 @@
+
+/**
+ * class ListNode {
+ *   public int value;
+ *   public ListNode next;
+ *   public ListNode(int value) {
+ *     this.value = value;
+ *     next = null;
+ *   }
+ * }
+ */
+public class Solution {
+  public ListNode mergeSort(ListNode head) {
+    // Write your solution here.
+    if (head == null || head.next == null) {
+      return head;
+    }
+    ListNode mid = findMid(head);
+    ListNode tail = mid.next;
+    mid.next = null;
+    head = mergeSort(head);
+    tail = mergeSort(tail);
+    return merge(head, tail);
+  }
+  private ListNode findMid(ListNode head) {
+    ListNode s = head, f = head;
+    while (f.next != null && f.next.next != null) {
+      s = s.next;
+      f = f.next.next;
+    }
+    return s;
+  }
+  private ListNode merge(ListNode one, ListNode two) {
+    ListNode dummy = new ListNode(0);
+    ListNode cur = dummy;
+    while (one != null && two != null) {
+      if (one.value < two.value) {
+        cur.next = one;
+        one = one.next;
+      } else {
+        cur.next = two;
+        two = two.next;
+      }
+      cur = cur.next;
+    }
+    cur.next = one == null ? two : one;
+    return dummy.next;
+  }
+}
