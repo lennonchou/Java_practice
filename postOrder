@@ -1,0 +1,42 @@
+/**
+ * public class TreeNode {
+ *   public int key;
+ *   public TreeNode left;
+ *   public TreeNode right;
+ *   public TreeNode(int key) {
+ *     this.key = key;
+ *   }
+ * }
+ */
+public class Solution {
+  public List<Integer> postOrder(TreeNode root) {
+    // Write your solution here.
+    List<Integer> res = new ArrayList<>();
+    if (root == null) {
+      return res;
+    }
+    Deque<TreeNode> stack = new LinkedList<>();
+    TreeNode cur = root, prev = null;
+    stack.push(cur);
+    while (!stack.isEmpty()) {
+      cur = stack.peek();
+      if (prev == null || cur == prev.left || cur == prev.right) {
+        if (cur.left != null) {
+          stack.push(cur.left);
+        } else if (cur.right != null) {
+          stack.push(cur.right);
+        } else {
+          cur = stack.pop();
+          res.add(cur.key);
+        }
+      } else if (cur.right == prev || cur.left == prev && cur.right == null) {
+        cur = stack.pop();
+        res.add(cur.key);
+      } else {
+        stack.push(cur.right);
+      }
+      prev = cur;
+    }
+    return res;
+  }
+}
